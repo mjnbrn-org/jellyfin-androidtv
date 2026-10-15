@@ -58,10 +58,11 @@ android {
 	buildTypes {
 		release {
 			isMinifyEnabled = true
-			// Attempt 4: resource path shortening flag alone (gradle.properties)
-			// did not stop the renamer, so disable release resource shrinking too.
-			// Banner/icon are protected by res/raw/keep.xml; code minify stays on.
-			isShrinkResources = false
+			// Resource path shortening (which renamed the TV banner to e.g.
+			// res/Ti.png) is disabled via android.enableResourceOptimizations
+			// in gradle.properties; keep resource shrinking on — the renamer
+			// was never the shrinker. Banner/icon protected by res/raw/keep.xml.
+			isShrinkResources = true
 			proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
 
 			// Set package names used in various XML files (fork id, not the upstream namespace)
