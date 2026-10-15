@@ -58,7 +58,9 @@ android {
 	buildTypes {
 		release {
 			isMinifyEnabled = true
-			isShrinkResources = true
+			// Resource shrinking is disabled: it renamed launcher resources (banner -> res/Ti.png),
+			// which Fire TV's launcher cannot resolve, showing the app icon on grey instead of the banner.
+			isShrinkResources = false
 			proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
 
 			// Set package names used in various XML files (fork id, not the upstream namespace)
