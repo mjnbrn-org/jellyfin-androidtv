@@ -542,10 +542,29 @@ public class PlaybackController implements PlaybackControllerNotifiable {
         if (!isLiveTv && currentMediaSource != null) {
             internalOptions.setMediaSourceId(currentMediaSource.getId());
         }
+        // Force a low-bitrate transcode for 10-bit video the device claims to support
+        // but stalls on (e.g. HEVC Main 10 on some Fire TV models). Null-safe: an
+        // unknown bit depth or missing media streams means no override (unchanged
+        // behavior). Only the primary video stream is considered.
+        Integer maxBitrateOverride = null;
+        if (userPreferences.getValue().get(UserPreferences.Companion.getForceTranscode10BitVideo())
+                && currentMediaSource != null
+                && currentMediaSource.getMediaStreams() != null) {
+            for (MediaStream stream : currentMediaSource.getMediaStreams()) {
+                if (stream.getType() == MediaStreamType.VIDEO) {
+                    Integer bitDepth = stream.getBitDepth();
+                    if (bitDepth != null && bitDepth >= 10) {
+                        maxBitrateOverride = userPreferences.getValue().getTranscode10BitFallbackBitrate();
+                    }
+                    break;
+                }
+            }
+        }
         DeviceProfile internalProfile = DeviceProfileKt.createDeviceProfile(
                 mFragment.getContext(),
                 userPreferences.getValue(),
-                get(ServerVersion.class)
+                get(ServerVersion.class),
+                maxBitrateOverride
         );
         internalOptions.setProfile(internalProfile);
         return internalOptions;

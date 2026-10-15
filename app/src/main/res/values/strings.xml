@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
-    <string name="app_name_release" translatable="false" tools:ignore="UnusedResources">Jellyfin</string>
+    <string name="app_name_release" translatable="false" tools:ignore="UnusedResources">Jellyfin (Ben)</string>
     <string name="app_name_debug" translatable="false" tools:ignore="UnusedResources">Jellyfin Debug</string>
     <string name="video_error_unknown_error">Failed to load video</string>
     <string name="loading">Loading…</string>
@@ -8,6 +8,9 @@
     <string name="byletter_letters">ABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
     <string name="pref_playback">Playback</string>
     <string name="pref_max_bitrate_title">Max streaming bitrate</string>
+    <string name="pref_force_transcode_10bit_title">Force transcode for 10-bit video</string>
+    <string name="pref_force_transcode_10bit_description">Transcode 10-bit video streams at a low bitrate instead of direct playing them. Some devices claim 10-bit support but stall during playback.</string>
+    <string name="pref_transcode_10bit_fallback_bitrate_title">10-bit transcode bitrate</string>
     <string name="settings_title">Preferences</string>
     <string name="pref_authentication_cat">Authentication</string>
     <string name="chapters">Chapters</string>

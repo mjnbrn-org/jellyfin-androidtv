@@ -136,6 +136,30 @@ fun SettingsPlaybackAdvancedScreen() {
 		}
 
 		item {
+			var forceTranscode10BitVideo by rememberPreference(userPreferences, UserPreferences.forceTranscode10BitVideo)
+
+			ListButton(
+				headingContent = { Text(stringResource(R.string.pref_force_transcode_10bit_title)) },
+				captionContent = { Text(stringResource(R.string.pref_force_transcode_10bit_description)) },
+				trailingContent = { Checkbox(checked = forceTranscode10BitVideo) },
+				onClick = { forceTranscode10BitVideo = !forceTranscode10BitVideo },
+				modifier = Modifier.focusKey("force_transcode_10bit_video")
+			)
+		}
+
+		item {
+			var transcode10BitFallbackBitrate by rememberPreference(userPreferences, UserPreferences.transcode10BitFallbackBitrate)
+			val options = getQualityProfiles(context)
+
+			ListButton(
+				headingContent = { Text(stringResource(R.string.pref_transcode_10bit_fallback_bitrate_title)) },
+				captionContent = { Text(options[transcode10BitFallbackBitrate].orEmpty()) },
+				onClick = { router.push(Routes.PLAYBACK_FORCE_TRANSCODE_10BIT_BITRATE) },
+				modifier = Modifier.focusKey(Routes.PLAYBACK_FORCE_TRANSCODE_10BIT_BITRATE)
+			)
+		}
+
+		item {
 			var refreshRateSwitchingBehavior by rememberPreference(userPreferences, UserPreferences.refreshRateSwitchingBehavior)
 
 			ListButton(

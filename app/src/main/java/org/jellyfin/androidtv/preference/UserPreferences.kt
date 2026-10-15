@@ -27,6 +27,7 @@ import org.jellyfin.preference.longPreference
 import org.jellyfin.preference.store.SharedPreferenceStore
 import org.jellyfin.preference.stringPreference
 import org.jellyfin.sdk.model.api.MediaSegmentType
+import kotlin.math.roundToInt
 import kotlin.time.Duration.Companion.minutes
 
 /**
@@ -55,6 +56,19 @@ class UserPreferences(context: Context) : SharedPreferenceStore(
 		 * Maximum bitrate in megabit for playback.
 		 */
 		var maxBitrate = stringPreference("pref_max_bitrate", "100")
+
+		/**
+		 * Force a low-bitrate transcode for 10-bit video streams. Some devices
+		 * (e.g. certain Fire TV models) report 10-bit support via MediaCodec
+		 * but stall during direct playback of 10-bit content.
+		 */
+		var forceTranscode10BitVideo = booleanPreference("pref_force_transcode_10bit_video", true)
+
+		/**
+		 * Fallback bitrate in megabit for forced 10-bit transcodes.
+		 * Uses the same Mbps-string convention as [maxBitrate].
+		 */
+		var transcode10BitFallbackBitrate = stringPreference("pref_transcode_10bit_fallback_bitrate", "1")
 
 		/**
 		 * Auto-play next item
@@ -317,6 +331,21 @@ class UserPreferences(context: Context) : SharedPreferenceStore(
 		 * Integrate with androidx.tvprovider for the Android TV home screen.
 		 */
 		var tvProviderEnabled = booleanPreference("tv_provider_enabled", true)
+	}
+
+	/**
+	 * Fallback bitrate in bits for forced 10-bit transcodes, converted from the
+	 * Mbps string stored in [transcode10BitFallbackBitrate]. Mirrors the
+	 * getMaxBitrate() conversion in deviceProfile.kt.
+	 */
+	fun getTranscode10BitFallbackBitrate(): Int {
+		var fallbackBitrate = this[transcode10BitFallbackBitrate].toFloatOrNull()
+
+		// The value "0" was used in an older release, make sure we prevent that from being used to avoid video not playing
+		if (fallbackBitrate == null || fallbackBitrate < 0.01f) fallbackBitrate = transcode10BitFallbackBitrate.defaultValue.toFloat()
+
+		// Convert megabit to bit
+		return (fallbackBitrate * 1_000_000).roundToInt()
 	}
 
 	init {

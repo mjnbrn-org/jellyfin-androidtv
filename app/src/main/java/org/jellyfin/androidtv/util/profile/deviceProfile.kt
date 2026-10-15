@@ -90,13 +90,21 @@ private fun UserPreferences.isBitstreamAudioEnabled(context: Context, format: Bi
 		BitstreamAudioMode.DISABLE -> false
 	}
 
+/**
+ * Builds the device profile used for playback decisions. When [maxBitrateOverride] is
+ * non-null it replaces the user's "Max streaming bitrate" preference, making the server
+ * transcode items above the override (reason ContainerBitrateExceedsLimit). Used to force
+ * a low-bitrate transcode for 10-bit video the device cannot reliably direct play.
+ */
+@JvmOverloads
 fun createDeviceProfile(
 	context: Context,
 	userPreferences: UserPreferences,
 	serverVersion: ServerVersion,
+	maxBitrateOverride: Int? = null,
 ) = createDeviceProfile(
 	mediaTest = MediaCodecCapabilitiesTest(userPreferences[UserPreferences.softwareCodecsEnabled]),
-	maxBitrate = userPreferences.getMaxBitrate(),
+	maxBitrate = maxBitrateOverride ?: userPreferences.getMaxBitrate(),
 	isAC3PrefEnabled = userPreferences.isBitstreamAudioEnabled(context, BitstreamAudioFormat.AC3),
 	isEAC3PrefEnabled = userPreferences.isBitstreamAudioEnabled(context, BitstreamAudioFormat.EAC3),
 	isDTSPrefEnabled = userPreferences.isBitstreamAudioEnabled(context, BitstreamAudioFormat.DTS),

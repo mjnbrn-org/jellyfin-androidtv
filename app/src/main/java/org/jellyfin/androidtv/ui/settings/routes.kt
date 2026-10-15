@@ -40,6 +40,7 @@ import org.jellyfin.androidtv.ui.settings.screen.playback.SettingsPlaybackAudioB
 import org.jellyfin.androidtv.ui.settings.screen.playback.SettingsPlaybackBitstreamAudioScreen
 import org.jellyfin.androidtv.ui.settings.screen.playback.SettingsPlaybackBufferLengthScreen
 import org.jellyfin.androidtv.ui.settings.screen.playback.SettingsPlaybackCodecScreen
+import org.jellyfin.androidtv.ui.settings.screen.playback.SettingsPlaybackForceTranscode10BitBitrateScreen
 import org.jellyfin.androidtv.ui.settings.screen.playback.SettingsPlaybackHEVCLevelScreen
 import org.jellyfin.androidtv.ui.settings.screen.playback.SettingsPlaybackHdrOverrideScreen
 import org.jellyfin.androidtv.ui.settings.screen.playback.SettingsPlaybackHdrOverridesScreen
@@ -105,6 +106,7 @@ object Routes {
 	const val PLAYBACK_ADVANCED = "/playback/advanced"
 	const val PLAYBACK_RESUME_SUBTRACT_DURATION = "/playback/resume-subtract-duration"
 	const val PLAYBACK_MAX_BITRATE = "/playback/max-bitrate"
+	const val PLAYBACK_FORCE_TRANSCODE_10BIT_BITRATE = "/playback/force-transcode-10bit-bitrate"
 	const val PLAYBACK_REFRESH_RATE_SWITCHING_BEHAVIOR = "/playback/refresh-rate-switching-behavior"
 	const val PLAYBACK_ZOOM_MODE = "/playback/zoom-mode"
 	const val PLAYBACK_BUFFER_LENGTH = "/playback/buffer-length"
@@ -261,6 +263,9 @@ val routes = mapOf<String, RouteComposable>(
 	},
 	Routes.PLAYBACK_MAX_BITRATE to {
 		SettingsPlaybackMaxBitrateScreen()
+	},
+	Routes.PLAYBACK_FORCE_TRANSCODE_10BIT_BITRATE to {
+		SettingsPlaybackForceTranscode10BitBitrateScreen()
 	},
 	Routes.PLAYBACK_REFRESH_RATE_SWITCHING_BEHAVIOR to {
 		SettingsPlaybackRefreshRateSwitchingBehaviorScreen()

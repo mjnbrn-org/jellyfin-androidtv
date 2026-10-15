@@ -7,6 +7,10 @@ plugins {
 
 android {
 	namespace = "org.jellyfin.androidtv"
+	// Fork application id so this build installs alongside the official app
+	// (which uses the namespace as its id). The Kotlin namespace and all package
+	// names stay untouched to keep rebasing on upstream trivial.
+	val forkApplicationId = "org.jellyfin.androidtv.ben"
 	compileSdk = libs.versions.android.compileSdk.get().toInt()
 
 	defaultConfig {
@@ -14,7 +18,7 @@ android {
 		targetSdk = libs.versions.android.targetSdk.get().toInt()
 
 		// Release version
-		applicationId = namespace
+		applicationId = forkApplicationId
 		versionName = project.getVersionName()
 		versionCode = getVersionCode(versionName!!)
 	}
@@ -57,10 +61,10 @@ android {
 			isShrinkResources = true
 			proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
 
-			// Set package names used in various XML files
-			resValue("string", "app_id", namespace!!)
-			resValue("string", "app_search_suggest_authority", "${namespace}.content")
-			resValue("string", "app_search_suggest_intent_data", "content://${namespace}.content/intent")
+			// Set package names used in various XML files (fork id, not the upstream namespace)
+			resValue("string", "app_id", forkApplicationId)
+			resValue("string", "app_search_suggest_authority", "$forkApplicationId.content")
+			resValue("string", "app_search_suggest_intent_data", "content://$forkApplicationId.content/intent")
 
 			// Set flavored application name
 			resValue("string", "app_name", "@string/app_name_release")
@@ -74,10 +78,10 @@ android {
 			// Use different application id to run release and debug at the same time
 			applicationIdSuffix = ".debug"
 
-			// Set package names used in various XML files
-			resValue("string", "app_id", namespace + applicationIdSuffix)
-			resValue("string", "app_search_suggest_authority", "${namespace + applicationIdSuffix}.content")
-			resValue("string", "app_search_suggest_intent_data", "content://${namespace + applicationIdSuffix}.content/intent")
+			// Set package names used in various XML files (fork id, not the upstream namespace)
+			resValue("string", "app_id", forkApplicationId + applicationIdSuffix)
+			resValue("string", "app_search_suggest_authority", "${forkApplicationId + applicationIdSuffix}.content")
+			resValue("string", "app_search_suggest_intent_data", "content://${forkApplicationId + applicationIdSuffix}.content/intent")
 
 			// Set flavored application name
 			resValue("string", "app_name", "@string/app_name_debug")
